@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.7.1.min.js"></script>
+    <style>
+         tr th,td{padding: 10px 25px;text-align: left}
+        td{font-size: 14px;}
+        .m-in{text-align: left}
+    </style>
+</head>
+<body>
+    <div class="content" align="center">
+        <div style="margin: 5px 0;">
+            <button class="m-add">增加</button>
+        </div>
+        <table class="">
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-name="lemon" data-old="18">
+                    <td class="name">
+                        mike
+                    </td>
+                    <td class="old">
+                        18
+                    </td>
+                    <td class="operators">
+                        <a class="o-edit" href="javascript:;">edit</a>
+                    </td>
+                </tr>
+                <tr data-name="mike" data-old="22">
+                    <td class="name">
+                        lemon
+                    </td>
+                    <td class="old">
+                        22
+                    </td>
+                    <td class="operators">
+                        <a class="o-edit" href="javascript:;">edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<script>
+    /*start 点击增加按钮-----------------------*/
+    $('.m-add').on('click',function () {
+        $('.content tbody').prepend('<tr><td class="name"><input type="text" class="add-in-name"/></td><td class="old"><input type="text" class="add-in-old"/></td><td class="operators"><a class="add-ok" href="javascript:;">ok</a> <a class="add-cancel" href="javascript:;">cancel</a></td></tr>');
+    })
+    /*end 点击增加按钮-------------------------*/
+    
+    /*start 取消按钮（增加中的取消）-----------*/
+    $(document).on('click','.add-cancel',function () {
+       var tr= $(this).parent().parent('tr');
+       tr.remove();
+    })
+    /*end 取消按钮（增加中的取消）-------------*/
+
+    /*start 确认按钮（增加中的确认）-----------*/
+    $(document).on('click','.add-ok',function () {
+        var tr=$(this).parent().parent('tr');
+        var addName= tr.find('input.add-in-name').val();
+        var addOld=tr.find('input.add-in-old').val();
+        tr.find('td.name').html(addName);
+        tr.find('td.old').html(addOld);
+        tr.find('td.operators').html('<a class="o-edit" href="javascript:;">edit</a>');
+        tr.data('name',addName);
+        tr.data('old',addOld);
+    })
+    /*end 确认按钮（增加中的确认）-------------*/
+    
+    /*start 点击编辑按钮()---------------------*/
+    $(document).on('click touchend','.o-edit',function (){
+        var tr=$(this).parent().parent('tr');
+        var name=tr.find('td.name').html();
+        var old=tr.find('td.old').html();
+        tr.find('td.name').html('<input type="text" class="in-name" value="'+name+'"/>');
+        tr.find('td.old').html('<input type="text" class="in-old" value="'+old+'">');
+        tr.find('td.operators').html('<a class="ok" href="javascript:;">ok</a> <a class="cancel" href="javascript:;">cancel</a>');
+    })
+    /*end 点击编辑按钮（）---------------------*/
+
+    /*start 点击确认按钮 修改------------------*/
+    $(document).on('click touchend','.ok',function () {
+        var tr=$(this).parent().parent('tr');
+        var name=tr.find('input.in-name').val();
+        var old=tr.find('input.in-old').val();
+        tr.find('td.name').html(name);
+        tr.find('td.old').html(old);
+        tr.find('td.operators').html('<a class="o-edit " href="javascript:;">edit</a>');
+        tr.data('name',name);
+        tr.data('old',old);
+    })
+    /*end 点击确认按钮 修改--------------------*/
+    
+    /*start 点击取消按钮-----------------------*/
+    $(document).on('click touchend','.cancel',function () {
+        var tr=$(this).parent().parent('tr');
+        var name=tr.data('name');
+        var old=tr.data('old');
+        tr.find('td.name').html(name);
+        tr.find('td.old').html(old);
+        tr.find('td.operators').html('<a class="o-edit" href="javascript:;">edit</a>');
+    })
+    /*end 点击取消按钮-------------------------*/
+</script>
+</body>
+</html>
