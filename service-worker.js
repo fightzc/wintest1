@@ -29,3 +29,32 @@ self.addEventListener('activate', function(e){
         })
     );
 });
+
+self.addEventListener('fetch', function(e) {
+    e.respondWith(
+        caches.match(e.request).then(function(respond){
+            return respond || fetch(e.request)
+                    .then(function(res){
+                        return caches.open(cacheName).then(function(cache){
+                            if (e.request.url.endsWith("jpg") ||
+                                e.request.url.endsWith("jpeg") ||
+                                e.request.url.endsWith("png") ||
+                                e.request.url.endsWith("bmp") ||
+                                e.request.url.endsWith("gif") ||
+                                e.request.url.endsWith("css") ||
+                                e.request.url.endsWith("js") ||
+                                e.request.url.endsWith("woff")){
+                                cache.put(e.request.url, res.clone());
+                            } else {
+                                console.log('=====url::', e.request.url);
+                            }
+                            return res;
+                        });
+                        // return res;
+                    })
+                    .catch(function(){
+                        return caches.match('test.html');
+                    });
+        })
+    )
+});
