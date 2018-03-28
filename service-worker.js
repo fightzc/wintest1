@@ -21,7 +21,7 @@ self.addEventListener('activate', function(e){
     console.log('[ServiceWorker] Activate');
     e.waitUntil(
         caches.keys().then(function(keyList){
-            return Promise.all(keyList.map(function(){
+            return Promise.all(keyList.map(function(key){
                 console.log('[ServiceWorker] Removing old cache', key);
                 if (key !== cacheName) {
                     return caches.delete(key);
