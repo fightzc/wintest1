@@ -3,7 +3,8 @@
  */
 var cacheName = 'oslab-zc-blog';
 var filesToCache = [
-    'test.html'
+    'test.html',
+    '1.png'
 ];
 
 self.addEventListener('install', function(e){
