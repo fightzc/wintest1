@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/3/28.
  */
-var cacheName = 'oslab-zc-blog-7';
+var cacheName = 'oslab-zc-blog-8';
 var filesToCache = [
     'test.html',
     '1.png'
