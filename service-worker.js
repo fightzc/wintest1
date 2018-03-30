@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/3/28.
  */
-var cacheName = 'oslab-zc-blog';
+var cacheName = 'oslab-zc-blog-2';
 var filesToCache = [
     'test.html',
     '1.png'
@@ -24,7 +24,7 @@ self.addEventListener('activate', function(e){
             return Promise.all(keyList.map(function(key){
                 console.log('[ServiceWorker] Removing old cache', key);
                 if (key !== cacheName) {
-                    return caches.delete(key);
+                    return caches.delete(cacheName);
                 }
             }))
         })
