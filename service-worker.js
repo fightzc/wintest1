@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2018/3/28.
  */
-var cacheName = 'oslab-zc-blog-3';
+var cacheName = 'oslab-zc-blog-4';
 var filesToCache = [
     'test.html',
     '1.png'
@@ -9,6 +9,7 @@ var filesToCache = [
 
 self.addEventListener('install', function(e){
     console.log('service worker install');
+    //使用self.skipWaiting触发activate
     e.waitUntil(
         caches
             .open(cacheName)
