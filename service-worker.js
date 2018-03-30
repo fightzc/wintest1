@@ -12,7 +12,7 @@ self.addEventListener('install', function(e){
     e.waitUntil(
         caches
             .open(cacheName)
-            .then(function() { _self.skipWaiting();  })
+            .then(function() { self.skipWaiting();  })
             .then(function() { console.log('[ServiceWorker] Install success'); })
     );
 });
