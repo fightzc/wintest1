@@ -4,7 +4,8 @@
 var cacheName = 'oslab-zc-blog-6';
 var filesToCache = [
     'test.html',
-    '1.png'
+    '1.png',
+    'manifest.json'
 ];
 
 self.addEventListener('install', function(e){
@@ -60,3 +61,20 @@ self.addEventListener('fetch', function(e) {
         })
     )
 });
+
+// 取消添加到主屏幕
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+function sendMsg(msg) {
+    const controller = navigator.serviceWorker.controller;
+
+    if (!controller) {
+        return;
+    }
+
+    controller.postMessage(msg, []);
+}
+
