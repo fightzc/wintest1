@@ -63,7 +63,7 @@ self.addEventListener('fetch', function(e) {
 });
 
 // 取消添加到主屏幕
-window.addEventListener('beforeinstallprompt', function(e) {
+self.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     return false;
 });
