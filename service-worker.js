@@ -4,28 +4,34 @@ const
     offlineURL = '/wintest1/',
     installFilesEssential = [ '/', '1.png' ].concat(offlineURL);
 
-self.addEventListener('install', event => {
+self.addEventListener('install', function(event) {
     console.log('server worker install');
     event.waitUtill(
         caches.open(CACHE)
-            .then(cache => {
+            .then(function(cache) {
             cache.addAll(installFilesEssential);
             })
-            .then(() => self.skipWaiting())
+            .then(function() {
+                self.skipWaiting()
+            } )
     );
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', function(event) {
     console.log('server worker activate');
     event.waitUtill(
         caches.keys()
-            .then(keylist => {
+            .then(function(keylist) {
             return Promise.all(
                 keylist
-                    .filter(key => $key !== CACHE)
-                    .map(key => caches.delete(key))
+                    .filter( function(key){
+                        key !== CACHE
+                    })
+                    .map(caches.delete(key))
             )
         })
-        .then(() => self.clients.claim())
+        .then(function(){
+            self.clients.claim()
+        })
     );
 })
