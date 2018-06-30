@@ -6,7 +6,7 @@ const
 
 self.addEventListener('install', function(event) {
     console.log('server worker install');
-    event.waitUtill(
+    event.waitUntil(
         caches.open(CACHE)
             .then(function(cache) {
             cache.addAll(installFilesEssential);
@@ -19,7 +19,7 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('activate', function(event) {
     console.log('server worker activate');
-    event.waitUtill(
+    event.waitUntil(
         caches.keys()
             .then(function(keylist) {
             return Promise.all(
