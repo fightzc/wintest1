@@ -23,11 +23,11 @@ self.addEventListener('activate', function(event) {
         caches.keys()
             .then(function(keylist) {
             return Promise.all(
-                keylist
-                    .filter( function(key){
-                        key !== CACHE
-                    })
-                    .map(caches.delete(key))
+                keylist.map(function(key){
+                    if (CACHE.indexOf(key) !== -1){
+                        return caches.delete(CACHE)
+                    }
+                })
             )
         })
         .then(function(){
