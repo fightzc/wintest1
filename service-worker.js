@@ -2,7 +2,7 @@ const
     version = '1.0.0',
     CACHE = 'test' + version,
     offlineURL = '/wintest1/',
-    installFilesEssential = [ '/', '1.png' ];
+    installFilesEssential = [];
 
 self.addEventListener('install', function(event) {
     console.log('server worker install');
