@@ -14,7 +14,9 @@ self.addEventListener('install', function(e){
     e.waitUntil(
         caches
             .open(cacheName)
-            .then(caches.addAll(filesToCache))
+            .then(function(cache){
+                cache.addAll(filesToCache)
+            })
             .then(function() { self.skipWaiting();  })
             .then(function() { console.log('[ServiceWorker] Install success'); })
     );
