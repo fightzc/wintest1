@@ -5,7 +5,7 @@ const
     installFilesEssential = [ '/', '1.png' ].concat(offlineURL);
 
 self.addEventListener('install', event => {
-    console,log('server worker install');
+    console.log('server worker install');
     event.waitUtill(
         caches.open(CACHE)
             .then(cache => {
