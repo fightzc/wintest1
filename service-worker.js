@@ -1,9 +1,9 @@
 /**
  * Created by Administrator on 2018/3/28.
  */
-var cacheName = 'oslab-zc-blog-3';
+var cacheName = 'oslab-zc-blog-4';
 var filesToCache = [
-    '1.png'
+
 ];
 
 self.addEventListener('install', function(e){
@@ -40,14 +40,7 @@ self.addEventListener('fetch', function(e) {
             return respond || fetch(e.request)
                     .then(function(res){
                         return caches.open(cacheName).then(function(cache){
-                            if (e.request.url.endsWith("jpg") ||
-                                e.request.url.endsWith("jpeg") ||
-                                e.request.url.endsWith("png") ||
-                                e.request.url.endsWith("bmp") ||
-                                e.request.url.endsWith("gif") ||
-                                e.request.url.endsWith("css") ||
-                                e.request.url.endsWith("js") ||
-                                e.request.url.endsWith("woff")){
+                            if (e.request.url.endsWith("html")){
                                 cache.put(e.request.url, res.clone());
                             } else {
                                 console.log('=====url::', e.request.url);
