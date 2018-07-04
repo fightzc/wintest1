@@ -1,4 +1,4 @@
-const version = '1.0.1';
+const version = '1.0.0';
 const cache_name = 'test'+version;
 
 const cache_resource_url = [
