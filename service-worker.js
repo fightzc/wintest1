@@ -51,7 +51,7 @@ function onlineRequest(fetchRequest){
     return fetch(fetchRequest)
         .then(function(response){
             //在请求成功后缓存需要的文件
-            if (!response || response.status != 200 || !response.headers.get('Content-type').match(/image|javascript|test\/css/i) ){
+            if (!response || response.status != 200){
                 return response;
             }
             //成功则克隆
