@@ -28,7 +28,7 @@ self.addEventListener('install', function(event){
  */
 self.addEventListener('activate', function(event){
     event.waitUntil(
-        caches.key().then(function(keyList){
+        caches.keys().then(function(keyList){
             return Promise.all([
                 clients.claim(), //更新客户端
                 keyList.map(function(key){
