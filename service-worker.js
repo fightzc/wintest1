@@ -32,7 +32,10 @@ self.addEventListener('activate', function(event){
             return Promise.all([
                 clients.claim(), //更新客户端
                 keyList.map(function(key){
-                    caches.delete(cache_name)
+                    if (key != cache_name){
+                         caches.delete(cache_name)
+                        }
+                  
                    
                 })
             ])
