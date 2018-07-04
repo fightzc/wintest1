@@ -1,74 +1,79 @@
-/**
- * Created by Administrator on 2018/3/28.
- */
-var cacheName = 'oslab-zc-blog-5';
-var filesToCache = [
+const version = '1.0.0';
+const cache_name = 'test'+version;
 
+const cache_resource_url = [
+    //'1.png'
 ];
 
-self.addEventListener('install', function(e){
-    console.log('service worker install');
-    //ä½¿ç¨self.skipWaitingè§¦åactivate
-    e.waitUntil(
-        caches
-            .open(cacheName)
+/**
+ * 安装
+ * 缓存需要的文件，进入等待状态
+ * 通过skipWating()直接进入激活状态
+ */
+self.addEventListener('install', function(event){
+    event.waitUntil(
+        caches.open(cache_name)
             .then(function(cache){
-                cache.addAll(filesToCache)
+              return cache.addAll(cache_resource_url);
+             })
+            .then(function(){
+                self.skipWaiting()  //跳过等待进入激活状态
             })
-            .then(function() { self.skipWaiting();  })
-            .then(function() { console.log('[ServiceWorker] Install success'); })
     );
 });
 
-self.addEventListener('activate', function(e){
-    console.log('[ServiceWorker] Activate');
-    e.waitUntil(
-        caches.keys().then(function(keyList){
-            return Promise.all(keyList.map(function(key){
-                console.log('[ServiceWorker] Removing old cache', key);
-                if (key !== cacheName) {
-                    return caches.delete(key);
-                }
-            }))
+/**
+ * 激活
+ * 更新客户端sw，清楚缓存
+ */
+self.addEventListener('activate', function(event){
+    event.waitUntil(
+        caches.key().then(function(keyList){
+            return Promise.all([
+                clients.claim(), //更新客户端
+                keyList.map(function(key){
+                    if (cache_name != key){
+                        caches.delete(cache_name)
+                    }
+                })
+            ])
         })
     );
 });
 
-self.addEventListener('fetch', function(e) {
-    e.respondWith(
-        caches.match(e.request).then(function(respond){
-            return respond || fetch(e.request)
-                    .then(function(res){
-                        return caches.open(cacheName).then(function(cache){
-                            if (e.request.url.endsWith("html")){
-                                cache.put(e.request.url, res.clone());
-                            } else {
-                                console.log('=====url::', e.request.url);
-                            }
-                            return res;
-                        });
-                        // return res;
-                    })
-                    .catch(function(){
-                        return caches.match('test.html');
-                    });
+self.addEventListener('fetch', function(event){
+    const fetchRequest = event.request.clone();
+    onlineRequest(fetchRequest);
+});
+
+//联网情况下
+function onlineRequest(fetchRequest){
+    return fetch(fetchRequest)
+        .then(function(response){
+            //在请求成功后缓存需要的文件
+            if (!response || response.status != 200 || !response.headers.get('Content-type').match(/image|javascript|test\/css/i) ){
+                return response;
+            }
+            //成功则克隆
+            const responseToCache = response.clone();
+            caches.open(cache_name)
+                .then(function(cache){
+                    cache.put(fetchRequest, responseToCache)
+                })
+            return response;
+        }).catch(function(){
+            //获取失败，使用离线文件
+            offlieRequest(fetchRequest)
+        });
+}
+
+//离线
+function offlieRequest(fetchRequest){
+    caches.match(fetchRequest)
+        .then(function(hit){
+            if (hit){
+                return hit;
+            }
         })
-    )
-});
-
-// åæ¶æ·»å å°ä¸»å±å¹
-self.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault();
-    return false;
-});
-
-function sendMsg(msg) {
-    const controller = navigator.serviceWorker.controller;
-
-    if (!controller) {
-        return;
-    }
-
-    controller.postMessage(msg, []);
 }
 
